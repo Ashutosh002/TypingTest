@@ -92,7 +92,9 @@ export default function App() {
             {gameStatus ? <h1>WPM: {wpm ? wpm : 0}</h1> : <button onClick={startGame}>Start</button>}
             <br/>
             <button onClick={resetGame} >Reset</button>
+            <br/>
             <h1>{timeRemaining === 0 ? 'You were able to type ' + wordCount + ' words in ' + START_TIME + ' sec.' : null} </h1>
+            <br/>
             <h1>{timeRemaining === 0 ? 'WPM: ' + wpm : null} </h1>
         </div>
     )
