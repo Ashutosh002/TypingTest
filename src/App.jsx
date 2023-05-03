@@ -1,18 +1,20 @@
-import React from "react"
+import React, {useState, useEffect, useRef} from "react"
 
 
 export default function App() {
 
-    const START_TIME = 60
+    const START_TIME = 120
     
-    const [textArea, setTextArea] = React.useState("")
-    const [timeRemaining, setTimeRemaining] = React.useState(START_TIME)
-    const [gameStatus, setGameStatus] = React.useState(false)
-    const [wordCount, setWordCount] = React.useState()
-    const [wpm, setWpm] = React.useState()
+    const [textArea, setTextArea] = useState("")
+    const [timeRemaining, setTimeRemaining] = useState(START_TIME)
+    const [gameStatus, setGameStatus] = useState(false)
+    const [wordCount, setWordCount] = useState()
+    const [wpm, setWpm] = useState()
+    const inputRef = useRef(null)
 
 
-    React.useEffect(() => {
+
+    useEffect(() => {
         // console.log('effect')
         // console.log(timeRemaining)
         // console.log(gameStatus)
@@ -30,7 +32,7 @@ export default function App() {
       }
     }, [timeRemaining, gameStatus])
 
-    React.useEffect(() => {
+    useEffect(() => {
         let words = textArea.split(" ").filter((word) => word !== "").length
         let elapsedTime = START_TIME - timeRemaining
         let wordPerMinute = Math.floor(words/elapsedTime*60)
@@ -46,11 +48,18 @@ export default function App() {
     function startGame(){
       if(gameStatus == false && timeRemaining === 0){
           setTextArea("")
-          setGameStatus(true)
+          setGameStatus(true);
           setTimeRemaining(START_TIME)
           setWordCount();
+          setTimeout(() => {
+            inputRef.current.focus();
+          }, 0);
+
       } else if(gameStatus == false){
-          setGameStatus(true)
+          setGameStatus(true);
+          setTimeout(() => {
+            inputRef.current.focus();
+          }, 0);
       }
 
     }
@@ -69,21 +78,22 @@ export default function App() {
             {gameStatus == false 
               ?
                 <div className="block--div">
-                  <h1 className="block--div--h1">Click the START button to begin typing...</h1>
+                  <h2 className="block--div--h1">Click the START button to begin typing...</h2>
                 </div>
               :   
                 <textarea 
+                ref={inputRef}
                 onChange={handleTextAreaChange}
                 name="textarea"
                 type="text"
                 value={textArea}
-                disabled={gameStatus == false ? true : false}
             />}
-            <h4>Time reminaing: {timeRemaining} sec.</h4>
+            <h4>Time remaining: {timeRemaining} sec.</h4>
             {gameStatus ? <h1>WPM: {wpm ? wpm : 0}</h1> : <button onClick={startGame}>Start</button>}
             <br/>
             <button onClick={resetGame} >Reset</button>
-            <h1>{timeRemaining === 0 ? 'Word Count: ' : null}  {wordCount}</h1>
+            <h1>{timeRemaining === 0 ? 'You were able to type ' + wordCount + ' words in ' + START_TIME + ' sec.' : null} </h1>
+            <h1>{timeRemaining === 0 ? 'WPM: ' + wpm : null} </h1>
         </div>
     )
 }
