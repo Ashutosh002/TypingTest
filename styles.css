@@ -24,8 +24,9 @@ button {
 }
 
 h1 {
-    font-size: 20px;
+    font-size: 25px;
     text-align:center;
+    margin-top: 50px;
 }
 
 textarea {
@@ -51,5 +52,5 @@ textarea {
 }
 
 .block--div--h1 {
-    padding-top: 4.5rem;
+    padding-top: 4.3rem;
 }
